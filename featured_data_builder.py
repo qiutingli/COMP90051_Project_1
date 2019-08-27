@@ -104,6 +104,3 @@ if __name__ == '__main__':
     featured_df = featured_data_builder.construct_featured_data_frame()
     featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
     featured_data_builder.write_featured_df_to_csv(featured_training_df_path)
-
-    # print(featured_df)
-    # print(pd.read_csv(featured_training_df_path, sep=',').head())
