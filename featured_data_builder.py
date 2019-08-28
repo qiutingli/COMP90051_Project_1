@@ -10,7 +10,10 @@ class FeatureExtractor:
 
     def __init__(self, tweet):
         self.tweet = tweet
-        self.tokenized_tweet = word_tokenize(tweet)
+        try:
+            self.tokenized_tweet = word_tokenize(tweet)
+        except:
+            self.tokenized_tweet = ['']
 
 
     # Determine if the tweet is a retweet. Return 1 if it's a retweet, return 0 otherwise.
@@ -23,26 +26,44 @@ class FeatureExtractor:
 
     # Return the  hash tag contents in tweet.
     def get_hashtag_contents(self):
-        return re.findall(r"#(\w+)", self.tweet)
+        try:
+            return re.findall(r"#(\w+)", self.tweet)
+        except:
+            return ['']
 
     # Return number of mentions in tweet. TODO: Double check.
     def get_num_of_mentions(self):
-        return len(re.findall(r"@(\w+)", self.tweet))
+        try:
+            return len(re.findall(r"@(\w+)", self.tweet))
+        except:
+            return 0
 
     # Determine if the tweet contains urls.
     def get_urls(self):
-        urls = re.findall('https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', self.tweet)
+        urls = ['']
+        try:
+            urls = re.findall('https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', self.tweet)
+        except:
+            pass
         return urls
 
 
 
 class FeaturedDataBuilder:
 
-    def __init__(self, original_data):
-        self.featured_df_columns = ['id',
-                                    'retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
-                                    'num_of_mentions', 'num_of_urls', 'url_contents']
+    # TODO: Generalize it to fit both training and testing data
+    def __init__(self, original_data, file_path, type):
+
         self.original_data = original_data
+        self.file_path = file_path
+        self.type = type
+        if self.type == 'training':
+            self.featured_df_columns = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
+                                        'num_of_mentions', 'num_of_urls', 'url_contents',
+                                        'id']
+        elif self.type == "testing":
+            self.featured_df_columns = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
+                                        'num_of_mentions', 'num_of_urls', 'url_contents']
 
 
     # Initialize featured data frame by using given column names.
@@ -52,8 +73,7 @@ class FeaturedDataBuilder:
 
     # Construct featured data frame iterating the original data.
     def construct_featured_data_frame(self):
-        featured_df = self.initialize_featured_data_frame()
-        for i in range(len(self.original_data))[1:10]:
+        for i in range(len(self.original_data)):
             tweet = self.original_data.iloc[i]['tweet']
             extractor = FeatureExtractor(tweet)
 
@@ -66,41 +86,51 @@ class FeaturedDataBuilder:
             num_of_urls = len(url_contents)
 
             featured_dict = {
-                self.featured_df_columns[0]: original_training_data.iloc[i]['id'],
-                self.featured_df_columns[1]: retweet_or_not,
-                self.featured_df_columns[2]: num_of_words,
-                self.featured_df_columns[3]: num_of_hashtags,
-                self.featured_df_columns[4]: hashtag_contents,
-                self.featured_df_columns[5]: num_of_mentions,
-                self.featured_df_columns[6]: num_of_urls,
-                self.featured_df_columns[7]: url_contents
+                self.featured_df_columns[0]: retweet_or_not,
+                self.featured_df_columns[1]: num_of_words,
+                self.featured_df_columns[2]: num_of_hashtags,
+                self.featured_df_columns[3]: 0, #hashtag_contents, TODO: Find ways dealing with it
+                self.featured_df_columns[4]: num_of_mentions,
+                self.featured_df_columns[5]: num_of_urls,
+                self.featured_df_columns[6]: 0 #url_contents
             }
-            featured_df = featured_df.append(featured_dict, ignore_index=True)
+            if self.type == 'training':
+                featured_dict[self.featured_df_columns[7]] = original_training_data.iloc[i]['id']
 
-        self.featured_df = featured_df
-        return self.featured_df
+            featured_df = pd.Series(featured_dict).to_frame().T
+            self.write_featured_df_to_csv(featured_df)
+
+        #     featured_df = featured_df.append(featured_dict, ignore_index=True)
+        # return featured_df
 
 
-    def write_featured_df_to_csv(self, file):
-        if os.path.exists(file):
-            self.featured_df.to_csv(file)
+    def write_featured_df_to_csv(self, featured_df):
+        if os.path.exists(self.file_path):
+            featured_df.to_csv(self.file_path, mode = 'a', header = False, index = False, encoding = "utf-8")
         else:
-            try:
-                os.makedirs(file)
-            except Exception as e:
-                print(e)
-            self.featured_df.to_csv(file, index=False, encoding="utf-8")
+            featured_df.to_csv(self.file_path, index = False, encoding = "utf-8")
 
 
 
 if __name__ == '__main__':
 
-    # Read original training dataset
+    # Read original datasets
     training_data_path = "%s/data/train_tweets.txt" % os.path.abspath('.')
     original_training_data = pd.read_csv(training_data_path, sep ="\t", names = ['id', 'tweet'])
+    testing_data_path = "%s/data/test_tweets_unlabeled.txt" % os.path.abspath('.')
+    original_testing_data = pd.read_csv(testing_data_path, names = ['tweet'])
 
-    # Transform original training dataset to featured dataset
-    featured_data_builder = FeaturedDataBuilder(original_training_data)
-    featured_df = featured_data_builder.construct_featured_data_frame()
-    featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
-    featured_data_builder.write_featured_df_to_csv(featured_training_df_path)
+    # # Transform original training dataset to featured dataset
+    # featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
+    # featured_training_data_builder = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
+    # featured_df = featured_training_data_builder.construct_featured_data_frame()
+
+    # Transform original testing dataset to featured dataset
+    featured_testing_df_path = "%s/data/featured_testing_df.csv" % os.path.abspath('.')
+    featured_testing_data_builder = FeaturedDataBuilder(original_testing_data, featured_testing_df_path, "testing")
+    featured_testing_data_builder.construct_featured_data_frame()
+
+
+
+    # print(featured_df)
+    # print(pd.read_csv(featured_training_df_path, sep=',').head())
