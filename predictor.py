@@ -29,8 +29,15 @@ def fit_and_dump_model(X_train, y_train, model):
     # Save the model to disk
     joblib.dump(model, model_file_path)
 
-if __name__ == '__main__':
+def make_prediction_file(y_predict):
+    pd.DataFrame(y_predict).to_csv(prediction_path)
+    prediction_df = pd.read_csv(prediction_path)
+    prediction_df.columns = ['Id', 'Predicted']
+    prediction_df['Id'] += 1
+    prediction_df.to_csv(prediction_path, index=False)
 
+
+if __name__ == '__main__':
     X_train, y_train = load_training_data()
     X_test = load_testing_data()
 
@@ -40,13 +47,7 @@ if __name__ == '__main__':
     loaded_model = joblib.load(model_file_path)
     y_predict = loaded_model.predict(X_test)
 
-    pd.DataFrame(y_predict).to_csv(prediction_path)
-
-    prediction_df = pd.read_csv(prediction_path)
-    prediction_df.columns = ['Id', 'Predicted']
-    prediction_df['Id'] += 1
-    prediction_df.to_csv(prediction_path, index = False)
-
+    make_prediction_file(y_predict)
 
     # # Compute the training accuracy
     # Accuracy = 0

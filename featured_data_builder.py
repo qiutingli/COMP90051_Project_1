@@ -6,14 +6,15 @@ from nltk.tokenize import word_tokenize
 pd.set_option("display.max_columns", 500)
 
 
+class TweetCleaner:
+    pass
+
+
 class FeatureExtractor:
 
     def __init__(self, tweet):
         self.tweet = tweet
-        try:
-            self.tokenized_tweet = word_tokenize(tweet)
-        except:
-            self.tokenized_tweet = ['']
+        self.tokenized_tweet = word_tokenize(tweet)
 
 
     # Determine if the tweet is a retweet. Return 1 if it's a retweet, return 0 otherwise.
@@ -26,27 +27,18 @@ class FeatureExtractor:
 
     # Return the  hash tag contents in tweet.
     def get_hashtag_contents(self):
-        try:
-            return re.findall(r"#(\w+)", self.tweet)
-        except:
-            return ['']
+        return re.findall(r"#(\w+)", self.tweet)
+
 
     # Return number of mentions in tweet. TODO: Double check.
     def get_num_of_mentions(self):
-        try:
-            return len(re.findall(r"@(\w+)", self.tweet))
-        except:
-            return 0
+        return len(re.findall(r"@(\w+)", self.tweet))
+
 
     # Determine if the tweet contains urls.
     def get_urls(self):
-        urls = ['']
-        try:
-            urls = re.findall('https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', self.tweet)
-        except:
-            pass
+        urls = re.findall('https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', self.tweet)
         return urls
-
 
 
 class FeaturedDataBuilder:
@@ -57,13 +49,12 @@ class FeaturedDataBuilder:
         self.original_data = original_data
         self.file_path = file_path
         self.type = type
-        if self.type == 'training':
-            self.featured_df_columns = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
-                                        'num_of_mentions', 'num_of_urls', 'url_contents',
-                                        'id']
-        elif self.type == "testing":
-            self.featured_df_columns = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
+        features = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
                                         'num_of_mentions', 'num_of_urls', 'url_contents']
+        if self.type == 'training':
+            self.featured_df_columns = features + ['id']
+        elif self.type == "testing":
+            self.featured_df_columns = features
 
 
     # Initialize featured data frame by using given column names.
@@ -117,8 +108,12 @@ if __name__ == '__main__':
     # Read original datasets
     training_data_path = "%s/data/train_tweets.txt" % os.path.abspath('.')
     original_training_data = pd.read_csv(training_data_path, sep ="\t", names = ['id', 'tweet'])
+
     testing_data_path = "%s/data/test_tweets_unlabeled.txt" % os.path.abspath('.')
-    original_testing_data = pd.read_csv(testing_data_path, names = ['tweet'])
+    # original_testing_data = pd.read_csv(testing_data_path, names = ['tweet'])
+    f = open(testing_data_path, "r")
+    original_testing_data = pd.DataFrame(f.readlines(), columns = ['tweet'])
+    f.close()
 
     # # Transform original training dataset to featured dataset
     # featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
@@ -129,8 +124,3 @@ if __name__ == '__main__':
     featured_testing_df_path = "%s/data/featured_testing_df.csv" % os.path.abspath('.')
     featured_testing_data_builder = FeaturedDataBuilder(original_testing_data, featured_testing_df_path, "testing")
     featured_testing_data_builder.construct_featured_data_frame()
-
-
-
-    # print(featured_df)
-    # print(pd.read_csv(featured_training_df_path, sep=',').head())
