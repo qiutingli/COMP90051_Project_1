@@ -12,7 +12,6 @@ prediction_path = "%s/data/prediction.csv" % os.path.abspath('.')
 
 
 def load_training_data():
-
     training_set = pd.read_csv(featured_training_df_path, sep=',')
     X_train = training_set[['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
                             'num_of_mentions', 'num_of_urls', 'url_contents']]

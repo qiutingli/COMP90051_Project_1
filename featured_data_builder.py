@@ -85,7 +85,7 @@ class FeaturedDataBuilder:
         self.file_path = file_path
         self.type = type
         features = ['retweet_or_not', 'num_of_words', 'num_of_hashtags', 'hashtag_contents',
-                                        'num_of_mentions', 'num_of_urls', 'url_contents']
+                    'num_of_mentions', 'num_of_urls', 'url_contents']
         if self.type == 'training':
             self.featured_df_columns = features + ['id']
         elif self.type == "testing":
@@ -112,16 +112,16 @@ class FeaturedDataBuilder:
             num_of_urls = len(url_contents)
 
             featured_dict = {
-                self.featured_df_columns[0]: retweet_or_not,
-                self.featured_df_columns[1]: num_of_words,
-                self.featured_df_columns[2]: num_of_hashtags,
-                self.featured_df_columns[3]: 0, #hashtag_contents, TODO: Find ways dealing with it
-                self.featured_df_columns[4]: num_of_mentions,
-                self.featured_df_columns[5]: num_of_urls,
-                self.featured_df_columns[6]: 0 #url_contents
+                self.featured_df_columns[1]: retweet_or_not,
+                self.featured_df_columns[2]: num_of_words,
+                self.featured_df_columns[3]: num_of_hashtags,
+                self.featured_df_columns[4]: 0, #hashtag_contents. TODO: Find ways dealing with it.
+                self.featured_df_columns[5]: num_of_mentions,
+                self.featured_df_columns[6]: num_of_urls,
+                self.featured_df_columns[7]: 0 #url_contents
             }
             if self.type == 'training':
-                featured_dict[self.featured_df_columns[7]] = original_training_data.iloc[i]['id']
+                featured_dict[self.featured_df_columns[0]] = original_training_data.iloc[i]['id']
 
             featured_df = pd.Series(featured_dict).to_frame().T
             self.write_featured_df_to_csv(featured_df)
