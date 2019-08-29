@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b69656a-aca3-49c4-b8cc-6df22327a3ac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/featured_data_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/featured_data_builder.py" afterDir="false" />
     </list>
@@ -13,16 +12,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/COMP90051_Project_1$feature_extractor.coverage" NAME="feature_extractor Coverage Results" MODIFIED="1566971267676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/COMP90051_Project_1$featured_data_builder.coverage" NAME="featured_data_builder Coverage Results" MODIFIED="1567048376151" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/COMP90051_Project_1$feature_extractor.coverage" NAME="feature_extractor Coverage Results" MODIFIED="1567039469855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/COMP90051_Project_1$predictor.coverage" NAME="predictor Coverage Results" MODIFIED="1566980544552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/featured_data_builder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="608">
-              <caret line="38" column="20" selection-start-line="38" selection-start-column="20" selection-end-line="38" selection-end-column="20" />
+            <state relative-caret-position="-1286">
+              <caret line="52" column="54" lean-forward="true" selection-start-line="52" selection-start-column="54" selection-end-line="52" selection-end-column="54" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -30,11 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/predictor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="768">
-              <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+            <state relative-caret-position="800">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -64,14 +64,14 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/feature_extractor.py" />
-        <option value="$PROJECT_DIR$/featured_data_builder.py" />
         <option value="$PROJECT_DIR$/data/featured_testing_df.csv" />
         <option value="$PROJECT_DIR$/data/prediction.csv" />
         <option value="$PROJECT_DIR$/predictor.py" />
+        <option value="$PROJECT_DIR$/featured_data_builder.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="x" value="2" />
     <option name="y" value="23" />
     <option name="width" value="1408" />
@@ -120,8 +120,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.predictor">
-    <configuration name="feature_extractor" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.featured_data_builder">
+    <configuration name="featured_data_builder" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="COMP90051_Project_1" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -165,10 +165,14 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.predictor" />
+      <item itemvalue="Python.featured_data_builder" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.featured_data_builder" />
         <item itemvalue="Python.predictor" />
-        <item itemvalue="Python.feature_extractor" />
       </list>
     </recent_temporary>
   </component>
@@ -183,7 +187,7 @@
       <option name="presentableId" value="Default" />
       <updated>1566897810829</updated>
       <workItem from="1566897812344" duration="18111000" />
-      <workItem from="1566956925691" duration="11870000" />
+      <workItem from="1566956925691" duration="16849000" />
     </task>
     <task id="LOCAL-00001" summary="Added writing featured df to file functionality">
       <created>1566911555458</created>
@@ -206,11 +210,25 @@
       <option name="project" value="LOCAL" />
       <updated>1566914082060</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added Predicting Procecess">
+      <created>1566981397683</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566981397683</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added Predicting Procecess">
+      <created>1567049265239</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1567049265239</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29981000" />
+    <option name="totallyTimeSpent" value="34960000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -222,10 +240,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20314735" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18168813" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -240,7 +258,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50143063" side_tool="true" weight="0.25180724" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49928468" weight="0.32891566" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49928468" visible="true" weight="0.32891566" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49928468" visible="true" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -256,7 +274,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added writing featured df to file functionality" />
     <MESSAGE value="switch git user test" />
-    <option name="LAST_COMMIT_MESSAGE" value="switch git user test" />
+    <MESSAGE value="Added Predicting Procecess" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Predicting Procecess" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/pandas/io/common.py">
@@ -311,37 +330,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/test_tweets_unlabeled.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-74871">
-          <caret line="30728" column="3" selection-start-line="30728" selection-start-column="3" selection-end-line="30728" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/train_tweets.txt">
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="160192">
           <caret line="10012" selection-start-line="10012" selection-end-line="10012" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/featured_testing_df.csv">
-      <provider editor-type-id="csv-table-editor">
-        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
-      </provider>
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="-64451">
-          <caret line="30729" column="9" selection-start-line="30729" selection-start-column="9" selection-end-line="30729" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/featured_data_builder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="38" column="20" selection-start-line="38" selection-start-column="20" selection-end-line="38" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -355,10 +347,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/data/test_tweets_unlabeled.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-75222">
+          <caret line="29784" selection-start-line="29784" selection-end-line="29784" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/featured_testing_df.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor">
+        <state relative-caret-position="544368">
+          <caret line="34023" column="14" selection-start-line="34023" selection-start-column="14" selection-end-line="34023" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/predictor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="768">
-          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+        <state relative-caret-position="800">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/featured_data_builder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1286">
+          <caret line="52" column="54" lean-forward="true" selection-start-line="52" selection-start-column="54" selection-end-line="52" selection-end-column="54" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
