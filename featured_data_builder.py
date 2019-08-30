@@ -74,29 +74,38 @@ class FeaturedDataBuilder:
 
 
 if __name__ == '__main__':
-    # Read original training dataset
-    training_data_path = "%s/data/train_tweets.txt" % os.path.abspath('.')
+    # # Read original training dataset
+    # training_data_path = "%s/data/train_tweets.txt" % os.path.abspath('.')
+    # original_training_data = pd.read_csv(training_data_path, sep ="\t", names = ['user_id', 'tweet'])
+    # # Transform original training dataset to featured dataset
+    # featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
+    # featured_training_data_builder = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
+    # featured_training_data_builder.construct_featured_data_frame()
+    #
+    # # Read original testing dataset
+    # testing_data_path = "%s/data/test_tweets_unlabeled.txt" % os.path.abspath('.')
+    # f = open(testing_data_path, "r")
+    # original_testing_data = pd.DataFrame(f.readlines(), columns = ['tweet'])
+    # f.close()
+    # # Transform original testing dataset to featured dataset
+    # featured_testing_df_path = "%s/data/featured_testing_df.csv" % os.path.abspath('.')
+    # featured_testing_data_builder = FeaturedDataBuilder(original_testing_data, featured_testing_df_path, "testing")
+    # featured_testing_data_builder.construct_featured_data_frame()
+
+    training_data_path = "%s/data/test_data_for_coding.txt" % os.path.abspath('.')
     original_training_data = pd.read_csv(training_data_path, sep ="\t", names = ['user_id', 'tweet'])
-    # Transform original training dataset to featured dataset
-    featured_training_df_path = "%s/data/featured_training_df.csv" % os.path.abspath('.')
+    featured_training_df_path = "%s/data/test_featured_training_df.csv" % os.path.abspath('.')
     featured_training_data_builder = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
     featured_training_data_builder.construct_featured_data_frame()
 
-    # Read original testing dataset
-    testing_data_path = "%s/data/test_tweets_unlabeled.txt" % os.path.abspath('.')
-    f = open(testing_data_path, "r")
-    original_testing_data = pd.DataFrame(f.readlines(), columns = ['tweet'])
-    f.close()
-    # Transform original testing dataset to featured dataset
-    featured_testing_df_path = "%s/data/featured_testing_df.csv" % os.path.abspath('.')
-    featured_testing_data_builder = FeaturedDataBuilder(original_testing_data, featured_testing_df_path, "testing")
-    featured_testing_data_builder.construct_featured_data_frame()
+data = pd.read_csv(featured_training_df_path)
+data.head()
+grouped_data = data.groupby('user_id')
 
-    # training_data_path = "%s/data/test_data_for_coding.txt" % os.path.abspath('.')
-    # original_training_data = pd.read_csv(training_data_path, sep ="\t", names = ['user_id', 'tweet'])
-    # featured_training_df_path = "%s/data/test_featured_training_df.csv" % os.path.abspath('.')
-    # featured_training_data_builder = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
-    # featured_training_data_builder.construct_featured_data_frame()
+for name, group in grouped_data:
+    print(name)
+    print(grouped_data.get_group(name)['num_of_hashtags'].apply(lambda x: list(str(x))).sum())
+
 
 
 
