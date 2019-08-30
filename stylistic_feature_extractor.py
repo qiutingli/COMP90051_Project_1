@@ -38,6 +38,7 @@ class StylisticFeatureExtractor:
         num = 0
         for char in self.tweet:
             num += 1 if char in string.punctuation else 0
+        return num
 
     # Return number of happy smilies and sad smilies
     def get_num_of_smilies(self):
