@@ -20,43 +20,56 @@ class FeaturedDataBuilder:
                     'retweet_or_not', 'num_of_words', 'num_of_hashtags', 'most_freq_hashtag',
                     'num_of_mentions', 'num_of_urls', 'most_freq_url', 'num_of_puncts',
                     'num_of_happy_smilies', 'num_of_sad_smilies', 'num_of_emoji', 'num_of_slangs']
+        self.data_frame = pd.DataFrame()
 
     def write_featured_df_row_to_csv(self, featured_df):
-        if os.path.exists(self.file_path):
-            featured_df.to_csv(self.file_path, mode = 'a', header = False, index = False, encoding = "utf-8")
-        else:
-            featured_df.to_csv(self.file_path, index = False, encoding = "utf-8")
+        # if os.path.exists(self.file_path):
+        #     featured_df.to_csv(self.file_path, mode = 'a', header = False, index = False, encoding = "utf-8")
+        # else:
+        featured_df.to_csv(self.file_path, index = False, encoding = "utf-8")
 
     def transform_hashtag(self):
-        data = pd.read_csv(self.file_path)
-        grouped_data = data.groupby('user_id')
+        # data = pd.read_csv(self.file_path)
+        grouped_data = self.data_frame.groupby('user_id')
         for name, group in grouped_data:
             result = 'No'
-            appended_hashtag_series = grouped_data.get_group(name)['most_freq_hashtag'].apply(lambda x: ''.join(x))
-            appended_hashtag_list = list(appended_hashtag_series)
+            # appended_hashtag_series = grouped_data.get_group(name)['most_freq_hashtag'].apply(lambda x: ''.join(x))
+            appended_hashtag_list = list(grouped_data.get_group(name)['most_freq_hashtag'])
+            # print(appended_hashtag_list)
+
             try:
-                result = Counter(appended_hashtag_list).most_common(2)[1][0]
+                most_common = Counter(appended_hashtag_list).most_common(2)
+                if most_common[0][0] == '':
+                    if len(most_common) > 1:
+                        result = most_common[1][0]
+                else:
+                    result = most_common[0][0]
             except Exception as e:
                 print('hash', e)
-            data.loc[data.user_id == name, 'most_freq_hashtag'] = result
-        data.to_csv(self.file_path, index=False, encoding="utf-8")
+            self.data_frame.loc[self.data_frame.user_id == name, 'most_freq_hashtag'] = result
+        # data.to_csv(self.file_path, index=False, encoding="utf-8")
 
     def transform_url(self):
-        data = pd.read_csv(self.file_path)
-        grouped_data = data.groupby('user_id')
+        # data = pd.read_csv(self.file_path)
+        grouped_data = self.data_frame.groupby('user_id')
         for name, group in grouped_data:
             result = 'No'
-            appended_url_series = grouped_data.get_group(name)['most_freq_url'].apply(lambda x: ''.join(x))
-            appended_url_list = list(appended_url_series)
+            # appended_url_series = grouped_data.get_group(name)['most_freq_url'].apply(lambda x: ''.join(x))
+            appended_url_list = list(grouped_data.get_group(name)['most_freq_url'])
             # appended_list = grouped_data.agg({'most_freq_url': 'sum'})['most_freq_url']
             # grouped_data.apply(lambda x: [].extend(x))
             # grouped_data.agg({'b': 'sum', 'c': lambda x: ' '.join(x)})
             try:
-                result = Counter(appended_url_list).most_common(2)[1][0]
+                most_common = Counter(appended_url_list).most_common(2)
+                if most_common[0][0] == '':
+                    if len(most_common) > 1:
+                        result = most_common[1][0]
+                else:
+                    result = most_common[0][0]
             except Exception as e:
                 print('url', e)
-            data.loc[data.user_id == name, 'most_freq_url'] = result
-        data.to_csv(self.file_path, index=False, encoding="utf-8")
+            self.data_frame.loc[self.data_frame.user_id == name, 'most_freq_url'] = result
+        # data.to_csv(self.file_path, index=False, encoding="utf-8")
 
 
     def transform_columns(self):
@@ -75,11 +88,11 @@ class FeaturedDataBuilder:
             retweet_or_not = stylistic_extractor.determine_retweet()
             num_of_words = stylistic_extractor.get_num_of_words()
             hashtag_contents = stylistic_extractor.get_hashtag_contents()
+            most_freq_hashtag = ", ".join(hashtag_contents)
             num_of_hashtags = len(hashtag_contents)
-            most_freq_hashtag = hashtag_contents
 
             num_of_mentions = stylistic_extractor.get_num_of_mentions()
-            most_freq_url = stylistic_extractor.get_urls()
+            most_freq_url = ", ".join(stylistic_extractor.get_urls())
             num_of_urls = len(most_freq_url)
             num_of_puncts = stylistic_extractor.get_num_of_puncts()
 
@@ -105,11 +118,13 @@ class FeaturedDataBuilder:
                 featured_dict[self.features[0]] = original_training_data.iloc[i]['user_id']
 
             stylistic_featured_df = pd.Series(featured_dict).to_frame().T
-            wordvec_featured_df = wordvec_extractor.sentence2sequence(tweet)
-            # wordvec_featured_df = pd.DataFrame()
+            # wordvec_featured_df = wordvec_extractor.sentence2sequence(tweet)
+            wordvec_featured_df = pd.DataFrame()
             featured_df = pd.concat([stylistic_featured_df, wordvec_featured_df], axis = 1)
-
-            self.write_featured_df_row_to_csv(featured_df)
+            self.data_frame = pd.concat([self.data_frame, featured_df])
+        self.transform_hashtag()
+        self.transform_url()
+        self.write_featured_df_row_to_csv(self.data_frame)
 
         #     featured_df = featured_df.append(featured_dict, ignore_index=True)
         # return featured_df
@@ -140,8 +155,10 @@ if __name__ == '__main__':
     featured_training_df_path = "%s/data/test_featured_training_df.csv" % os.path.abspath('.')
     featured_training_data_builder = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
     featured_training_data_builder.construct_featured_data_frame()
-    featured_training_data_builder.transform_hashtag()
-    featured_training_data_builder.transform_url()
+    # featured_training_data_builder2 = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
+    # featured_training_data_builder2.transform_hashtag()
+    # featured_training_data_builder3 = FeaturedDataBuilder(original_training_data, featured_training_df_path, "training")
+    # featured_training_data_builder3.transform_url()
 
 
 

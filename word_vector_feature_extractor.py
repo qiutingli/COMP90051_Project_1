@@ -30,7 +30,7 @@ class WordVecFeatureExtractor():
         #         not os.path.isfile(self.glove_vectors_file)):
         #     urlretrieve("http://nlp.stanford.edu/data/glove.6B.zip",
         #                 self.glove_zip_file)
-        self.unzip_single_file(self.glove_zip_file, self.glove_vectors_file)
+        # self.unzip_single_file(self.glove_zip_file, self.glove_vectors_file)
 
         glove_wordmap = {}
         with open(self.glove_vectors_file, "r") as glove:
@@ -40,7 +40,8 @@ class WordVecFeatureExtractor():
 
         tokens = sentence.lower().split(" ")
         rows = []
-        words = []
+        # words = []
+
         # Greedy search for tokens
         for token in tokens:
             i = len(token)
@@ -48,11 +49,12 @@ class WordVecFeatureExtractor():
                 word = token[:i]
                 if word in glove_wordmap:
                     rows.append(glove_wordmap[word])
-                    words.append(word)
+                    # words.append(word)
                     token = token[i:]
                     i = len(token)
                 else:
                     i = i - 1
+
         features_array = sum(rows)/len(rows)
         features_df = pd.Series(features_array).to_frame().T
         return features_df
